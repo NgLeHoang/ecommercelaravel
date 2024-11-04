@@ -18,4 +18,12 @@ Route::middleware(['auth'])->group(function() {
 
 Route::middleware(['auth', AuthAdmin::class])->group(function() {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+
+    Route::get('/brands', [AdminController::class, 'brands'])->name('admin.brands');
+    Route::get('/brand/add', [AdminController::class, 'brand_add'])->name('admin.brand.add');
+    Route::post('/brand/add/store', [AdminController::class, 'brand_store'])->name('admin.brand.store');
+    Route::get('/brand/edit/{id}', [AdminController::class, 'brand_edit'])->name('admin.brand.edit');
+    Route::put('/brand/update', [AdminController::class, 'brand_update'])->name('admin.brand.update');
+    Route::delete('/brand/delete/{id}', [AdminController::class, 'brand_delete'])->name('admin.brand.delete');
+
 });
