@@ -243,19 +243,19 @@
       }
     });
 
-    $("#gFile").on("change", function(e){
+    $("#gFile").on("change", function (e) {
       const gPhotos = this.files;
-      
-      $.each(gPhotos, function(key, value) {
-          $("#galUpload").prepend(`<div class="item gitems"><img src="${URL.createObjectURL(value)}" /></div>`);
+
+      $.each(gPhotos, function (key, value) {
+        $("#galUpload").prepend(`<div class="item gitems"><img src="${URL.createObjectURL(value)}" /></div>`);
       })
-  });
+    });
 
     $("input[name='name']").on("change", function () {
       $("input[name='slug']").val(StringToSlug($(this).val()));
     });
 
-    $('.delete').on('click', function(e) {
+    $('.delete').on('click', function (e) {
       e.preventDefault();
       var form = $(this).closest('form');
 
@@ -263,11 +263,10 @@
         title: "Are you sure?",
         text: "Once deleted, you will not be able to recover this data",
         type: "warning",
-        buttons: ["No","Yes"],
+        buttons: ["No", "Yes"],
         confirmButtonColor: "#dc3545",
-      }).then(function(result){
-        if(result)
-        {
+      }).then(function (result) {
+        if (result) {
           form.submit();
         }
       })
