@@ -243,6 +243,14 @@
       }
     });
 
+    $("#gFile").on("change", function(e){
+      const gPhotos = this.files;
+      
+      $.each(gPhotos, function(key, value) {
+          $("#galUpload").prepend(`<div class="item gitems"><img src="${URL.createObjectURL(value)}" /></div>`);
+      })
+  });
+
     $("input[name='name']").on("change", function () {
       $("input[name='slug']").val(StringToSlug($(this).val()));
     });
