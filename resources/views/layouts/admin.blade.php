@@ -140,8 +140,8 @@
                                     </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="" class="">
-                                        <div class="icon"><i class="icon-grid"></i></div>
+                                    <a href="{{route('admin.contacts')}}" class="">
+                                        <div class="icon"><i class="icon-mail"></i></div>
                                         <div class="text">Contacts</div>
                                     </a>
                                 </li>

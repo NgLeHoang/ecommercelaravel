@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Slide;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
     public function index(Request $request)
     {
+        $slides = Slide::where('status',1)->get()->take(3);
         $size = $request->query('size') ? $request->query('size') : 12;
         $order = $request->query('order') ? $request->query('order') : -1;
         $order_column = "";
@@ -54,7 +56,7 @@ class ShopController extends Controller
             ->orWhereBetween('sale_price',[$min_price,$max_price]);
         })                 
         ->orderBy($order_column,$order_option)->paginate($size);
-        return view('shop',compact('products','size','order','brands','filter_brands','categories','filter_categories','min_price','max_price'));
+        return view('shop',compact('products','size','order','brands','filter_brands','categories','filter_categories','min_price','max_price','slides'));
     }
 
     public function product_details($product_slug)

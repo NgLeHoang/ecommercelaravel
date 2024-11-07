@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
+Route::post('/contact/store', [HomeController::class, 'contact_store'])->name('home.contact.store');
+Route::get('/about', [HomeController::class, 'about'])->name('home.about');
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}', [ShopController::class, 'product_details'])->name('shop.product.details');
@@ -36,12 +39,22 @@ Route::delete('/wishlist/remove/{rowId}', [WishlistController::class, 'remove_it
 Route::delete('/wishlist/clear', [WishlistController::class, 'empty_wishlist'])->name('wishlist.clear');
 Route::post('/wishlist/move-to-cart/{rowId}', [WishlistController::class, 'move_to_cart'])->name('wishlist.move.to.cart');
 
-
 Route::middleware(['auth'])->group(function() {
     Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
+
     Route::get('/account-orders', [UserController::class, 'orders'])->name('user.orders');
     Route::get('/account-order/details/{order_id}', [UserController::class, 'order_details'])->name('user.order.details');
     Route::put('/account-order/cancel-order', [UserController::class, 'order_cancel'])->name('user.order.cancel');
+
+    Route::get('/account-address', [UserController::class, 'address'])->name('user.address');
+    Route::get('/account-address/add', [UserController::class, 'address_add'])->name('user.address.add');
+    Route::post('/account-address/store', [UserController::class, 'address_store'])->name('user.address.store');
+    Route::get('/account-address/edit/{id}', [UserController::class, 'address_edit'])->name('user.address.edit');
+    Route::put('/account-address/update', [UserController::class, 'address_update'])->name('user.address.update');
+
+    Route::get('/account-details', [UserController::class, 'account_details'])->name('user.account.details');
+    Route::put('/account-details/store', [UserController::class, 'account_save_details'])->name('user.account.store');
+
 });
 
 Route::middleware(['auth', AuthAdmin::class])->group(function() {
@@ -86,4 +99,6 @@ Route::middleware(['auth', AuthAdmin::class])->group(function() {
     Route::put('/slide/update', [AdminController::class, 'slide_update'])->name('admin.slide.update');
     Route::delete('/slide/delete/{id}', [AdminController::class, 'slide_delete'])->name('admin.slide.delete');
 
+    Route::get('/contacts', [AdminController::class, 'contacts'])->name('admin.contacts');
+    Route::delete('/contact/delete/{id}', [AdminController::class, 'contact_delete'])->name('admin.contact.delete');
 });
