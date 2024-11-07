@@ -39,6 +39,9 @@ Route::post('/wishlist/move-to-cart/{rowId}', [WishlistController::class, 'move_
 
 Route::middleware(['auth'])->group(function() {
     Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
+    Route::get('/account-orders', [UserController::class, 'orders'])->name('user.orders');
+    Route::get('/account-order/details/{order_id}', [UserController::class, 'order_details'])->name('user.order.details');
+    Route::put('/account-order/cancel-order', [UserController::class, 'order_cancel'])->name('user.order.cancel');
 });
 
 Route::middleware(['auth', AuthAdmin::class])->group(function() {
@@ -71,5 +74,9 @@ Route::middleware(['auth', AuthAdmin::class])->group(function() {
     Route::get('/coupon/edit/{id}', [AdminController::class, 'coupon_edit'])->name('admin.coupon.edit');
     Route::put('/coupon/update', [AdminController::class, 'coupon_update'])->name('admin.coupon.update');
     Route::delete('/coupon/delete/{id}', [AdminController::class, 'coupon_delete'])->name('admin.coupon.delete');
+
+    Route::get('/orders', [AdminController::class, 'orders'])->name('admin.orders');
+    Route::get('/order/details/{order_id}', [AdminController::class, 'order_details'])->name('admin.order.details');
+    Route::put('/order/update-status', [AdminController::class, 'update_order_status'])->name('admin.order.status.update');
 
 });
