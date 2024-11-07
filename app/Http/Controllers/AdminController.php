@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderItem;
 use App\Models\Transaction;
+use App\Models\Slide;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -580,5 +581,97 @@ class AdminController extends Controller
         }
 
         return back()->with('status','Status changed successfully');
+    }
+
+    public function slides()
+    {
+        $slides = Slide::orderBy('id','DESC')->paginate(12);
+        return view('admin.slides', compact('slides'));
+    }
+
+    public function slide_add()
+    {
+        return view('admin.slide-add');
+    }
+
+    public function slide_store(Request $request)
+    {
+        $request->validate([
+            'tagline' => 'required',
+            'title' => 'required',
+            'subtitle' => 'required',
+            'link' => 'required',
+            'image' => 'required|mimes:jpg,jpeg,png|max:2048',
+            'status' => 'required'
+        ]);
+
+        $slide = new Slide();
+        $slide->tagline = $request->tagline;
+        $slide->title = $request->title;
+        $slide->subtitle = $request->subtitle;
+        $slide->link = $request->link;
+        $slide->status = $request->status;
+
+        $image = $request->file('image');
+        $file_extension = $image->extension();
+        $file_name = Carbon::now()->timestamp.'.'.$file_extension;
+        $this->saveImageToFolder($image, $file_name, 'slides', 400, 690);
+        $slide->image = $file_name;
+        $slide->save();
+
+        return redirect()->route('admin.slides')->with('status','Slide has added successfully');
+    }
+
+    public function slide_edit($id)
+    {
+        $slide = Slide::find($id);
+        return view('admin.slide-edit', compact('slide'));
+    }
+
+    public function slide_update(Request $request)
+    {
+        $request->validate([
+            'tagline' => 'required',
+            'title' => 'required',
+            'subtitle' => 'required',
+            'link' => 'required',
+            'image' => 'mimes:jpg,jpeg,png|max:2048',
+            'status' => 'required'
+        ]);
+
+        $slide = Slide::find($request->id);
+        $slide->tagline = $request->tagline;
+        $slide->title = $request->title;
+        $slide->subtitle = $request->subtitle;
+        $slide->link = $request->link;
+        $slide->status = $request->status;
+
+        if($request->hasFile('image'))
+        {
+            $img = public_path('uploads/slides').'/'.$slide->image;
+            if(File::exists($img))
+                File::delete($img);
+            
+            $image = $request->file('image');
+            $file_extension = $image->extension();
+            $file_name = Carbon::now()->timestamp.'.'.$file_extension;
+            $this->saveImageToFolder($image, $file_name, 'slides', 400, 690);
+            $slide->image = $file_name;
+        }
+        $slide->save();
+
+        return redirect()->route('admin.slides')->with('status','Slide has updated successfully');
+    }
+
+    public function slide_delete($id)
+    {
+        $slide = Slide::find($id);
+        $img = public_path('uploads/slides') . '/' . $slide->image;
+        if (File::exists($img)) {
+            File::delete($img);
+        }
+        $slide->delete();
+
+        return redirect()->route('admin.slides')->with('status', 'Slide has deleted successfully!');
     }
 }

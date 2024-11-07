@@ -283,8 +283,8 @@
         </a>
   
         <div class="logo">
-          <a href="index.html">
-            <img src="assets/images/logo.png" alt="Uomo" class="logo__image d-block" />
+          <a href="{{route('home.index')}}">
+            LEHOANG SHOP
           </a>
         </div>
   
@@ -404,7 +404,7 @@
         <div class="header-desk header-desk_type_1">
           <div class="logo">
             <a href="{{route('home.index')}}">
-              <img src="assets/images/logo.png" alt="Uomo" class="logo__image d-block" />
+              LEHOANG SHOP
             </a>
           </div>
   
