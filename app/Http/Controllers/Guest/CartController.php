@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Guest;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
@@ -22,13 +22,13 @@ class CartController extends Controller
         return view('cart', compact('items'));
     }
 
-    public function add_to_cart(Request $request)
+    public function addToCart(Request $request)
     {
         Cart::instance('cart')->add($request->id, $request->name, $request->quantity, $request->price)->associate('App\Models\Product');
         return redirect()->back();
     }
 
-    public function adjust_cart_quantity($rowId, $action)
+    public function adjustCartQuantity($rowId, $action)
     {
         $product = Cart::instance('cart')->get($rowId);
         $qty = ($action === 'increase') ? $product->qty + 1 : $product->qty - 1;
@@ -37,99 +37,97 @@ class CartController extends Controller
         return redirect()->back();
     }
 
-    public function remove_item($rowId)
+    //Remove one item in cart
+    public function removeItem($rowId)
     {
         Cart::instance('cart')->remove($rowId);
         return redirect()->back();
     }
 
-    public function empty_cart()
+    //Remove all item in cart
+    public function emptyCart()
     {
         Cart::instance('cart')->destroy();
         return redirect()->back();
     }
 
-    public function apply_coupon_code(Request $request)
+    public function applyCouponCode(Request $request)
     {
         $coupon_code = $request->coupon_code;
-        if(isset($coupon_code))
-        {
-            $coupon = Coupon::where('code',$coupon_code)->where('expired_date','>=',Carbon::today()->endOfDay())
-            ->where('cart_value','<=',floatval(str_replace(',', '', Cart::instance('cart')->subtotal())))->first();
-            if (!$coupon)
-            {
-                
-                return redirect()->back()->with('error','Invalid coupon code!');
-            }
-            else
-            {
-                Session::put('coupon',[
-                    'code' => $coupon->code,
-                    'type' => $coupon->type,
-                    'value' => $coupon->value,
-                    'cart_value' => $coupon->cart_value
-                ]);
-                $this->calculateDiscount();
-                return redirect()->back()->with('success','Coupon has been applied!');
-            }
-        } else
-        {
-            return redirect()->back()->with('error','Invalid coupon code!');
+
+        //Check coupon
+        if (!isset($coupon_code)) {
+            return redirect()->back()->with('error', 'Invalid coupon code!');
         }
+
+        $coupon = Coupon::where('code', $coupon_code)
+            ->where('expired_date', '>=', Carbon::today()->endOfDay())
+            ->where('cart_value', '<=', floatval(str_replace(',', '', Cart::instance('cart')->subtotal())))
+            ->first();
+
+        if (!$coupon) {
+            return redirect()->back()->with('error', 'Invalid coupon code!');
+        }
+
+        Session::put('coupon', [
+            'code' => $coupon->code,
+            'type' => $coupon->type,
+            'value' => $coupon->value,
+            'cart_value' => $coupon->cart_value
+        ]);
+
+        $this->calculateDiscount();
+
+        return redirect()->back()->with('success', 'Coupon has been applied!');
     }
 
     public function calculateDiscount()
     {
         $discount = 0;
-        if(Session::has('coupon'))
-        {
-            if(Session::get('coupon')['type']=='fixed')
-            {
-                $discount = Session::get('coupon')['value'];
-            }
-            else
-            {
-                $discount = (floatval(str_replace(',', '', Cart::instance('cart')->subtotal())) * Session::get('coupon')['value']) / 100;
-            }
+        if (Session::has('coupon')) {
+            $coupon = Session::get('coupon');
+            $cartSubtotal = floatval(str_replace(',', '', Cart::instance('cart')->subtotal()));
 
-            $subtotalAfterDiscount = floatval(str_replace(',', '', Cart::instance('cart')->subtotal())) - $discount;
+            $discount = $coupon['type'] === 'fixed' ? $coupon['value'] : ($cartSubtotal * $coupon['value']) / 100;
+
+            $subtotalAfterDiscount = $cartSubtotal - $discount;
             $taxAfterDiscount = ($subtotalAfterDiscount * config('cart.tax')) / 100;
             $totalAfterDiscount = $subtotalAfterDiscount + $taxAfterDiscount;
 
-            Session::put('discounts',[
-                'discount' => number_format(floatval($discount),2,'.',''),
-                'subtotal' => number_format(floatval($subtotalAfterDiscount),2,'.',''),
-                'tax' => number_format(floatval($taxAfterDiscount),2,'.',''),
-                'total' => number_format(floatval($totalAfterDiscount),2,'.',''),
+            Session::put('discounts', [
+                'discount' => number_format($discount, 2, '.', ''),
+                'subtotal' => number_format($subtotalAfterDiscount, 2, '.', ''),
+                'tax' => number_format($taxAfterDiscount, 2, '.', ''),
+                'total' => number_format($totalAfterDiscount, 2, '.', ''),
             ]);
         }
     }
 
-    public function remove_coupon_code()
+    public function removeCouponCode()
     {
         Session::forget('coupon');
         Session::forget('discounts');
 
-        return redirect()->back()->with('success','Coupon has been removed!');
+        return redirect()->back()->with('success', 'Coupon has been removed!');
     }
 
-    public function checkout() {
-        if(!Auth::check())
-        {
+    public function checkout()
+    {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
-        $address = Address::where('user_id',Auth::user()->id)->where('is_default',1)->first();
+        $address = Address::where('user_id', Auth::user()->id)->where('is_default', 1)->first();
 
-        return view('checkout',compact('address'));
+        return view('checkout', compact('address'));
     }
 
-    public function place_an_order(Request $request)
+    public function placeAnOrder(Request $request)
     {
         $user_id = Auth::user()->id;
-        $address = Address::where('user_id',$user_id)->where('is_default',true)->first();
+        $address = Address::where('user_id', $user_id)->where('is_default', true)->first();
 
-        if(!$address)
-        {
+        //Create address if user not create address before
+        if (!$address) {
             $request->validate([
                 'name' => 'required|max:100',
                 'phone' => 'required|numeric|digits:10',
@@ -139,6 +137,7 @@ class CartController extends Controller
                 'locality' => 'required'
             ]);
 
+            //Init address
             $address = new Address();
             $address->name = $request->name;
             $address->phone = $request->phone;
@@ -146,7 +145,7 @@ class CartController extends Controller
             $address->city = $request->city;
             $address->address = $request->address;
             $address->locality = $request->locality;
-            $address->country = "Vietnam";
+            $address->country = 'Vietnam';
             $address->user_id = $user_id;
             $address->is_default = true;
 
@@ -161,18 +160,17 @@ class CartController extends Controller
         $order->discount = Session::get('checkout')['discount'];
         $order->tax = Session::get('checkout')['tax'];
         $order->total = Session::get('checkout')['total'];
-        $order->name = $address->name; 
-        $order->phone = $address->phone; 
-        $order->locality = $address->locality; 
-        $order->address = $address->address; 
-        $order->city = $address->city; 
-        $order->district = $address->district; 
+        $order->name = $address->name;
+        $order->phone = $address->phone;
+        $order->locality = $address->locality;
+        $order->address = $address->address;
+        $order->city = $address->city;
+        $order->district = $address->district;
         $order->country = $address->country;
-        
+
         $order->save();
 
-        foreach(Cart::instance('cart')->content() as $item)
-        {
+        foreach (Cart::instance('cart')->content() as $item) {
             $orderItem = new OrderItem();
             $orderItem->product_id = $item->id;
             $orderItem->order_id = $order->id;
@@ -181,22 +179,17 @@ class CartController extends Controller
 
             $orderItem->save();
         }
-        if($request->mode == "card")
-        {
-
-        }
-        elseif($request->mode == "paypal")
-        {
-
-        }
-        elseif($request->mode == "cod")
-        {
+        if ($request->mode == 'card') {
+            //Function update...
+        } elseif ($request->mode == 'paypal') {
+            //Function update...
+        } elseif ($request->mode == 'cod') {
             $transaction = new Transaction();
             $transaction->user_id = $user_id;
             $transaction->order_id = $order->id;
             $transaction->mode = $request->mode;
-            $transaction->status = "pending";
-    
+            $transaction->status = 'pending';
+
             $transaction->save();
         }
 
@@ -206,31 +199,26 @@ class CartController extends Controller
         Session::forget('discounts');
         Session::put('order_id', $order->id);
         return redirect()->route('cart.order.confirm');
-        
     }
 
     public function setAmountForCheckout()
     {
-        if(!Cart::instance('cart')->content()->count()>0)
-        {
+        if (!Cart::instance('cart')->content()->count() > 0) {
             Session::forget('checkout');
             return;
         }
 
-        if(Session::has('coupon'))
-        {
+        if (Session::has('coupon')) {
             Session::put('checkout', [
                 'discount' => floatval(str_replace(',', '', Session::get('discounts')['discount'])),
                 'subtotal' => floatval(str_replace(',', '', Session::get('discounts')['subtotal'])),
                 'tax' => floatval(str_replace(',', '', Session::get('discounts')['tax'])),
                 'total' => floatval(str_replace(',', '', Session::get('discounts')['total']))
             ]);
-        }
-        else
-        {
-            $subtotal = floatval(str_replace(',', '', Cart::instance('cart')->subtotal())); 
-            $tax = floatval(str_replace(',', '', Cart::instance('cart')->tax())); 
-            $total = floatval(str_replace(',', '', Cart::instance('cart')->total())); 
+        } else {
+            $subtotal = floatval(str_replace(',', '', Cart::instance('cart')->subtotal()));
+            $tax = floatval(str_replace(',', '', Cart::instance('cart')->tax()));
+            $total = floatval(str_replace(',', '', Cart::instance('cart')->total()));
 
             Session::put('checkout', [
                 'discount' => 0,
@@ -241,10 +229,9 @@ class CartController extends Controller
         }
     }
 
-    public function order_confirmation()
+    public function orderConfirmation()
     {
-        if(Session::has('order_id'))
-        {
+        if (Session::has('order_id')) {
             $order = Order::find(Session::get('order_id'));
             return view('order-confirm', compact('order'));
         }

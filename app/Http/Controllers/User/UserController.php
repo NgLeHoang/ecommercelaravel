@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
@@ -19,14 +19,15 @@ class UserController extends Controller
     {
         return view('user.index');
     }
-
+    
+    //Order management
     public function orders()
     {
         $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(10);
         return view('user.orders', compact('orders'));
     }
 
-    public function order_details($order_id)
+    public function orderDetails($order_id)
     {
         $order = Order::where('user_id', Auth::user()->id)->where('id', $order_id)->first();
         if ($order) {
@@ -38,16 +39,18 @@ class UserController extends Controller
         return view('user.order-details', compact('order', 'orderItems', 'transaction'));
     }
 
-    public function order_cancel(Request $request)
+    public function cancelOrder(Request $request)
     {
         $order = Order::find($request->order_id);
-        $order->status = "canceled";
+
+        $order->status = 'canceled';
         $order->canceled_date = Carbon::now();
         $order->save();
 
         return back()->with('status', 'Order has been canceled successfully!');
     }
-
+    
+    //Address management
     public function address()
     {
         $address = Address::where('user_id', Auth::user()->id)->where('is_default', true)->first();
@@ -58,7 +61,7 @@ class UserController extends Controller
         return view('user.address-add');
     }
 
-    public function address_store(Request $request)
+    public function storeAddress(Request $request)
     {
         $request->validate([
             'name' => 'required|max:100',
@@ -69,6 +72,7 @@ class UserController extends Controller
             'district' => 'required',
         ]);
 
+        //Init address
         $address = new Address();
         $address->name = $request->name;
         $address->phone = $request->phone;
@@ -76,7 +80,7 @@ class UserController extends Controller
         $address->city = $request->city;
         $address->address = $request->address;
         $address->locality = $request->locality;
-        $address->country = "Vietnam";
+        $address->country = 'Vietnam';
         $address->user_id = Auth::user()->id;
         $address->is_default = $request->is_default;
 
@@ -85,13 +89,13 @@ class UserController extends Controller
         return redirect()->route('user.address')->with('status', 'Address has added successfully');
     }
 
-    public function address_edit($id)
+    public function editAddress($id)
     {
         $address = Address::find($id);
         return view('user.address-edit', compact('address'));
     }
 
-    public function address_update(Request $request)
+    public function updateAddress(Request $request)
     {
         $request->validate([
             'name' => 'required|max:100',
@@ -109,7 +113,7 @@ class UserController extends Controller
         $address->city = $request->city;
         $address->address = $request->address;
         $address->locality = $request->locality;
-        $address->country = "Vietnam";
+        $address->country = 'Vietnam';
         $address->user_id = Auth::user()->id;
         $address->is_default = $request->is_default;
 
@@ -118,12 +122,13 @@ class UserController extends Controller
         return redirect()->route('user.address');
     }
 
-    public function account_details()
+    //Account management
+    public function accountDetails()
     {
         return view('user.account-details');
     }
 
-    public function account_save_details(Request $request)
+    public function saveAccountDetails(Request $request)
     {
         $user = User::find(Auth::user()->id);
 
@@ -133,6 +138,7 @@ class UserController extends Controller
             'phone' => 'required|numeric|digits:10',
         ]);
 
+        //Check if user input password to change
         if ($request->filled('old_password') || $request->filled('new_password')) {
             $request->validate([
                 'old_password' => 'required',

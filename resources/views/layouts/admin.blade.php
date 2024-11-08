@@ -61,12 +61,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.product.add')}}" class="">
+                                            <a href="{{route('admin.products.add')}}" class="">
                                                 <div class="text">Add Product</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.products')}}" class="">
+                                            <a href="{{route('admin.products.index')}}" class="">
                                                 <div class="text">Products</div>
                                             </a>
                                         </li>
@@ -79,12 +79,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.brand.add')}}" class="">
+                                            <a href="{{route('admin.brands.add')}}" class="">
                                                 <div class="text">New Brand</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.brands')}}" class="">
+                                            <a href="{{route('admin.brands.index')}}" class="">
                                                 <div class="text">Brands</div>
                                             </a>
                                         </li>
@@ -97,12 +97,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.category.add')}}" class="">
+                                            <a href="{{route('admin.categories.add')}}" class="">
                                                 <div class="text">New Category</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.categories')}}" class="">
+                                            <a href="{{route('admin.categories.index')}}" class="">
                                                 <div class="text">Categories</div>
                                             </a>
                                         </li>
@@ -116,7 +116,7 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.orders')}}" class="">
+                                            <a href="{{route('admin.orders.index')}}" class="">
                                                 <div class="text">Orders</div>
                                             </a>
                                         </li>
@@ -128,19 +128,19 @@
                                     </ul>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="{{route('admin.slides')}}" class="">
+                                    <a href="{{route('admin.slides.index')}}" class="">
                                         <div class="icon"><i class="icon-image"></i></div>
                                         <div class="text">Slides</div>
                                     </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="{{route('admin.coupons')}}" class="">
+                                    <a href="{{route('admin.coupons.index')}}" class="">
                                         <div class="icon"><i class="icon-grid"></i></div>
                                         <div class="text">Coupons</div>
                                     </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="{{route('admin.contacts')}}" class="">
+                                    <a href="{{route('admin.contacts.index')}}" class="">
                                         <div class="icon"><i class="icon-mail"></i></div>
                                         <div class="text">Contacts</div>
                                     </a>

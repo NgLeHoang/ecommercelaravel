@@ -33,7 +33,7 @@
                         </div>
                     </form>
                 </div>
-                <a class="tf-button style-1 w208" href="{{route('admin.coupon.add')}}"><i
+                <a class="tf-button style-1 w208" href="{{route('admin.coupons.add')}}"><i
                         class="icon-plus"></i>Add new</a>
             </div>
             <div class="wg-table table-all-user">
@@ -64,12 +64,12 @@
                                 <td>{{$coupon->expired_date}}</td>
                                 <td>
                                     <div class="list-icon-function">
-                                        <a href="{{route('admin.coupon.edit',['id'=>$coupon->id])}}">
+                                        <a href="{{route('admin.coupons.edit',['id'=>$coupon->id])}}">
                                             <div class="item edit">
                                                 <i class="icon-edit-3"></i>
                                             </div>
                                         </a>
-                                        <form action="{{route('admin.coupon.delete',['id'=>$coupon->id])}}" method="POST">
+                                        <form action="{{route('admin.coupons.delete',['id'=>$coupon->id])}}" method="POST">
                                             @csrf
                                             @method("DELETE")
                                             <div class="item text-danger delete">

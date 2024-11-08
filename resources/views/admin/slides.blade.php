@@ -33,7 +33,7 @@
                         </div>
                     </form>
                 </div>
-                <a class="tf-button style-1 w208" href="{{route('admin.slide.add')}}"><i
+                <a class="tf-button style-1 w208" href="{{route('admin.slides.add')}}"><i
                         class="icon-plus"></i>Add new</a>
             </div>
             <div class="wg-table table-all-user">
@@ -67,12 +67,12 @@
                             <td>{{$slide->link}}</td>
                             <td>
                                 <div class="list-icon-function">
-                                    <a href="{{route('admin.slide.edit',['id'=>$slide->id])}}">
+                                    <a href="{{route('admin.slides.edit',['id'=>$slide->id])}}">
                                         <div class="item edit">
                                             <i class="icon-edit-3"></i>
                                         </div>
                                     </a>
-                                    <form action="{{route('admin.slide.delete',['id'=>$slide->id])}}" method="POST">
+                                    <form action="{{route('admin.slides.delete',['id'=>$slide->id])}}" method="POST">
                                        @csrf
                                        @method('DELETE')
                                         <div class="item text-danger delete">

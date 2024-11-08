@@ -16,7 +16,7 @@
                         <i class="icon-chevron-right"></i>
                     </li>
                     <li>
-                        <a href="{{ route('admin.categories') }}">
+                        <a href="{{ route('admin.categories.index') }}">
                             <div class="text-tiny">Categories</div>
                         </a>
                     </li>
@@ -30,7 +30,7 @@
             </div>
             <!-- new-category -->
             <div class="wg-box">
-                <form class="form-new-product form-style-1" action="{{ route('admin.category.store') }}" method="POST"
+                <form class="form-new-product form-style-1" action="{{ route('admin.categories.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <fieldset class="name">

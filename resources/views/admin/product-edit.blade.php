@@ -16,7 +16,7 @@
                     <i class="icon-chevron-right"></i>
                 </li>
                 <li>
-                    <a href="{{ route('admin.products') }}">
+                    <a href="{{ route('admin.products.index') }}">
                         <div class="text-tiny">Products</div>
                     </a>
                 </li>
@@ -30,7 +30,7 @@
         </div>
         <!-- form-add-product -->
         <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data"
-            action="{{ route('admin.product.update') }}">
+            action="{{ route('admin.products.update') }}">
             @csrf
             @method('PUT')
             <input type="hidden" name="id" value="{{$product->id}}">

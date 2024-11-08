@@ -195,7 +195,7 @@
                 <div class="flex items-center justify-between">
                     <h5>Recent orders</h5>
                     <div class="dropdown default">
-                        <a class="btn btn-secondary dropdown-toggle" href="{{route('admin.orders')}}">
+                        <a class="btn btn-secondary dropdown-toggle" href="{{route('admin.orders.index')}}">
                             <span class="view-all">View all</span>
                         </a>
                     </div>
@@ -242,7 +242,7 @@
                                     <td class="text-center">{{$order->orderItems->count()}}</td>
                                     <td class="text-center">{{$order->delivered_date}}</td>
                                     <td class="text-center">
-                                        <a href="{{route('admin.order.details',['order_id'=>$order->id])}}">
+                                        <a href="{{route('admin.orders.details',['order_id'=>$order->id])}}">
                                             <div class="list-icon-function view-icon">
                                                 <div class="item eye">
                                                     <i class="icon-eye"></i>

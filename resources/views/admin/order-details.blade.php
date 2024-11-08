@@ -29,7 +29,7 @@
                 <div class="wg-filter flex-grow">
                     <h5>Ordered Items</h5>
                 </div>
-                <a class="btn btn-sm btn-danger" href="{{route('admin.orders')}}">Back</a>
+                <a class="btn btn-sm btn-danger" href="{{route('admin.orders.index')}}">Back</a>
             </div>
             <div class="table-responsive">
                 @if(Session::has('status'))

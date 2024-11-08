@@ -15,7 +15,7 @@
                     <i class="icon-chevron-right"></i>
                 </li>
                 <li>
-                    <a href="{{route('admin.slides')}}">
+                    <a href="{{route('admin.slides.index')}}">
                         <div class="text-tiny">Slides</div>
                     </a>
                 </li>

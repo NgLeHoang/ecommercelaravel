@@ -16,7 +16,7 @@
                     <i class="icon-chevron-right"></i>
                 </li>
                 <li>
-                    <a href="{{route('admin.slides')}}">
+                    <a href="{{route('admin.slides.index')}}">
                         <div class="text-tiny">Slides</div>
                     </a>
                 </li>
@@ -30,7 +30,7 @@
         </div>
         <!-- new-category -->
         <div class="wg-box">
-            <form class="form-new-product form-style-1" method="POST" action="{{route('admin.slide.update')}}" enctype="multipart/form-data">
+            <form class="form-new-product form-style-1" method="POST" action="{{route('admin.slides.update')}}" enctype="multipart/form-data">
                 @csrf
                 @method("PUT")
                 <input type="hidden" name="id" value="{{$slide->id}}"/>

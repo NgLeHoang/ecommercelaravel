@@ -15,7 +15,7 @@
                     <i class="icon-chevron-right"></i>
                 </li>
                 <li>
-                    <a href="{{route('admin.coupons')}}">
+                    <a href="{{route('admin.coupons.index')}}">
                         <div class="text-tiny">Coupons</div>
                     </a>
                 </li>
@@ -28,7 +28,7 @@
             </ul>
         </div>
         <div class="wg-box">
-            <form class="form-new-product form-style-1" method="POST" action="{{route('admin.coupon.store')}}">
+            <form class="form-new-product form-style-1" method="POST" action="{{route('admin.coupons.store')}}">
                 @csrf
                 <fieldset class="name">
                     <div class="body-title">Coupon Code <span class="tf-color-1">*</span></div>
