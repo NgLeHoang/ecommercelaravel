@@ -25,13 +25,26 @@ use App\Repositories\Contracts\DashboardRepositoryInterface;
 class AdminController extends Controller
 {
     /**
-     * @var \App\Repositories\Eloquent
+     * Repository for handling dashboard-related data operations.
+     *
+     * @var \App\Repositories\Eloquent\BrandRepositoryInterface
+     * @var \App\Repositories\Eloquent\CategoryRepositoryInterface
+     * @var \App\Repositories\Eloquent\ProductRepositoryInterface
+     * @var \App\Repositories\Eloquent\DashboardRepositoryInterface 
      */
     protected $brandRepo;
     protected $categoryRepo;
     protected $productRepo;
     protected $dashboardRepo;
 
+    /**
+     * Create a new controller instance and inject dependencies.
+     *
+     * @param \App\Repositories\Eloquent\BrandRepositoryInterface $brandRepo
+     * @param \App\Repositories\Eloquent\CategoryRepositoryInterface $categoryRepo
+     * @param \App\Repositories\Eloquent\ProductRepositoryInterface $productRepo
+     * @param \App\Repositories\Eloquent\DashboardRepositoryInterface $dashboardRepo
+     */
     public function __construct(
         BrandRepositoryInterface $brandRepo,
         CategoryRepositoryInterface $categoryRepo,
@@ -77,7 +90,7 @@ class AdminController extends Controller
             'TotalCanceledAmount'
         ));
     }
-    
+
     //Brand management
     public function brands()
     {
@@ -109,7 +122,7 @@ class AdminController extends Controller
         $fileName = Carbon::now()->timestamp . '.' . $fileExtension;
         $this->saveImageToFolder($image, $fileName, 'brands', 124, 124);
         $brand->image = $fileName;
-    
+
         $brand->save();
 
         return redirect()->route('admin.brands')->with('status', 'Brand has been added successfully');
@@ -166,7 +179,7 @@ class AdminController extends Controller
         $brand = $this->brandRepo->find($id);
         $img = public_path('uploads/brands') . '/' . $brand->image;
         if (File::exists($img)) File::delete($img);
-        
+
         $brand->delete();
 
         return redirect()->route('admin.brands')->with('status', 'Brand has been deleted successfully');
@@ -230,7 +243,7 @@ class AdminController extends Controller
         if ($request->hasFile('image')) {
             $img = public_path('uploads/categories') . '/' . $category->image;
             if (File::exists($img)) File::delete($img);
-            
+
             $image = $request->file('image');
             $fileExtension = $request->file('image')->extension();
             $fileName = Carbon::now()->timestamp . '.' . $fileExtension;
@@ -248,7 +261,7 @@ class AdminController extends Controller
         $category = $this->categoryRepo->find($id);
         $img = public_path('uploads/categories') . '/' . $category->image;
         if (File::exists($img)) File::delete($img);
-        
+
         $category->delete();
 
         return redirect()->route('admin.categories')->with('status', 'Category has been deleted successfully');

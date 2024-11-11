@@ -55,23 +55,23 @@ Route::middleware(['auth'])->prefix('account')->name('user.')->group(function ()
 
     // Orders
     Route::prefix('orders')->group(function () {
-        Route::get('/', [UserController::class, 'orders'])->name('orders');
-        Route::get('/details/{order_id}', [UserController::class, 'orderDetails'])->name('order.details');
-        Route::put('/cancel', [UserController::class, 'cancelOrder'])->name('order.cancel');
+        Route::get('/', [UserController::class, 'getUserOrders'])->name('orders');
+        Route::get('/details/{order_id}', [UserController::class, 'showOrderDetails'])->name('order.details');
+        Route::put('/cancel', [UserController::class, 'cancelUserOrder'])->name('order.cancel');
     });
 
     // Address Management
     Route::prefix('address')->name('address.')->group(function () {
-        Route::get('/', [UserController::class, 'address'])->name('index');
+        Route::get('/', [UserController::class, 'showUserAddress'])->name('index');
         Route::get('/add', [UserController::class, 'addAddress'])->name('add');
-        Route::post('/store', [UserController::class, 'storeAddress'])->name('store');
-        Route::get('/edit/{id}', [UserController::class, 'editAddress'])->name('edit');
+        Route::post('/store', [UserController::class, 'storeUserAddress'])->name('store');
+        Route::get('/edit/{id}', [UserController::class, 'editUserAddress'])->name('edit');
         Route::put('/update', [UserController::class, 'updateAddress'])->name('update');
     });
 
     // Account Details
     Route::get('/details', [UserController::class, 'accountDetails'])->name('account.details');
-    Route::put('/details/store', [UserController::class, 'saveAccountDetails'])->name('account.store');
+    Route::put('/details/store', [UserController::class, 'updateUserAccountDetails'])->name('account.store');
 });
 
 

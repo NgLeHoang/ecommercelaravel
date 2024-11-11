@@ -11,6 +11,16 @@ use App\Repositories\Contracts\ProductRepositoryInterface;
 use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Contracts\DashboardRepositoryInterface;
 use App\Repositories\Eloquent\DashboardRepository;
+use App\Repositories\Contracts\OrderRepositoryInterface;
+use App\Repositories\Eloquent\OrderRepository;
+use App\Repositories\Contracts\OrderItemRepositoryInterface;
+use App\Repositories\Eloquent\OrderItemRepository;
+use App\Repositories\Contracts\TransactionRepositoryInterface;
+use App\Repositories\Eloquent\TransactionRepository;
+use App\Repositories\Contracts\AddressRepositoryInterface;
+use App\Repositories\Eloquent\AddressRepository;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Eloquent\UserRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +33,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BrandRepositoryInterface::class, BrandRepository::class);
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
         $this->app->bind(DashboardRepositoryInterface::class, DashboardRepository::class);
+        $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
+        $this->app->bind(OrderItemRepositoryInterface::class, OrderItemRepository::class);
+        $this->app->bind(TransactionRepositoryInterface::class, TransactionRepository::class);
+        $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+
     }
 
     /**
