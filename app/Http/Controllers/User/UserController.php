@@ -15,28 +15,48 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 class UserController extends Controller
 {
     /**
-     * Repository for handling product-related data operations.
+     * Repository for handling order data operations.
      *
-     * @var \App\Repositories\Eloquent\OrderRepositoryInterface
-     * @var \App\Repositories\Eloquent\OrderItemRepositoryInterface
-     * @var \App\Repositories\Eloquent\TransactionRepositoryInterface
-     * @var \App\Repositories\Eloquent\AddressRepositoryInterface
-     * @var \App\Repositories\Eloquent\UserRepositoryInterface
+     * @var \App\Repositories\Contracts\OrderRepositoryInterface
      */
     protected $orderRepo;
+
+    /**
+     * Repository for handling order item data operations.
+     *
+     * @var \App\Repositories\Contracts\OrderItemRepositoryInterface
+     */
     protected $orderItemRepo;
+
+    /**
+     * Repository for handling transaction data operations.
+     *
+     * @var \App\Repositories\Contracts\TransactionRepositoryInterface
+     */
     protected $transactionRepo;
+
+    /**
+     * Repository for handling address data operations.
+     *
+     * @var \App\Repositories\Contracts\AddressRepositoryInterface
+     */
     protected $addressRepo;
+
+    /**
+     * Repository for handling user data operations.
+     *
+     * @var \App\Repositories\Contracts\UserRepositoryInterface
+     */
     protected $userRepo;
 
     /**
      * Create a new controller instance and inject dependencies.
      *
-     * @param \App\Repositories\Eloquent\OrderRepositoryInterface $orderRepo
-     * @param \App\Repositories\Eloquent\OrderItemRepositoryInterface $orderItemRepo
-     * @param \App\Repositories\Eloquent\TransactionRepositoryInterface $transactionRepo
-     * @param \App\Repositories\Eloquent\AddressRepositoryInterface $addressRepo
-     * @param \App\Repositories\Eloquent\UserRepositoryInterface $userRepo
+     * @param \App\Repositories\Contracts\OrderRepositoryInterface $orderRepo
+     * @param \App\Repositories\Contracts\OrderItemRepositoryInterface $orderItemRepo
+     * @param \App\Repositories\Contracts\TransactionRepositoryInterface $transactionRepo
+     * @param \App\Repositories\Contracts\AddressRepositoryInterface $addressRepo
+     * @param \App\Repositories\Contracts\UserRepositoryInterface $userRepo
      */
     public function __construct(
         OrderRepositoryInterface $orderRepo,
