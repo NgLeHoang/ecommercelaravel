@@ -13,7 +13,7 @@
         "loop": true
       }'>
             <div class="swiper-wrapper">
-                @foreach ($slides as $slide)
+                @foreach ($slides ?? [] as $slide)
                     <div class="swiper-slide">
                         <div class="overflow-hidden position-relative h-100">
                             <div class="slideshow-character position-absolute bottom-0 pos_right-center">
@@ -196,7 +196,7 @@
                   }
                 }'>
                                 <div class="swiper-wrapper">
-                                    @foreach ($saleProducts as $saleProduct)
+                                    @foreach ($saleProducts ?? [] as $saleProduct)
                                         <div class="swiper-slide product-card product-card_style3">
                                             <div class="pc__img-wrapper">
                                                 <a
@@ -238,7 +238,7 @@
             <section class="products-grid container">
                 <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Featured Products</h2>
                 <div class="row">
-                    @foreach ($featuredProducts as $featuredProduct)
+                    @foreach ($featuredProducts ?? [] as $featuredProduct)
                         <div class="col-6 col-md-4 col-lg-3">
                             <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
                                 <div class="pc__img-wrapper">
