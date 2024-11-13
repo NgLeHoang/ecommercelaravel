@@ -49,6 +49,16 @@ class BrandRepository implements BrandRepositoryInterface
     }
 
     /**
+     * Get brands for use in product selection.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getBrandsForProduct()
+    {
+        return $this->model->select('id', 'name')->orderBy('name')->get();
+    }
+
+    /**
      * Store a new brand in the database.
      *
      * @param array $data

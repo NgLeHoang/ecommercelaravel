@@ -33,7 +33,7 @@
             <form class="form-new-product form-style-1" action="{{route('admin.categories.update')}}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
-                @method('PUT');
+                @method('PUT')
                 <input type="hidden" name="id" value="{{$category->id}}"/>
                 <fieldset class="name">
                     <div class="body-title">Category Name <span class="tf-color-1">*</span>

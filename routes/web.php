@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Guest\CartController;
 use App\Http\Controllers\Guest\HomeController;
@@ -93,22 +95,22 @@ Route::middleware(['auth', AuthAdmin::class])->prefix('admin')->name('admin.')->
 
     // Category Management
     Route::prefix('categories')->name('categories.')->group(function () {
-        Route::get('/', [AdminController::class, 'categories'])->name('index');
-        Route::get('/add', [AdminController::class, 'addCategory'])->name('add');
-        Route::post('/store', [AdminController::class, 'storeCategory'])->name('store');
-        Route::get('/edit/{id}', [AdminController::class, 'editCategory'])->name('edit');
-        Route::put('/update', [AdminController::class, 'updateCategory'])->name('update');
-        Route::delete('/delete/{id}', [AdminController::class, 'deleteCategory'])->name('delete');
+        Route::get('/', [CategoryController::class, 'categories'])->name('index');
+        Route::get('/add', [CategoryController::class, 'addCategory'])->name('add');
+        Route::post('/store', [CategoryController::class, 'storeCategory'])->name('store');
+        Route::get('/edit/{id}', [CategoryController::class, 'editCategory'])->name('edit');
+        Route::put('/update', [CategoryController::class, 'updateCategory'])->name('update');
+        Route::delete('/delete/{id}', [CategoryController::class, 'deleteCategory'])->name('delete');
     });
 
     // Product Management
     Route::prefix('products')->name('products.')->group(function () {
-        Route::get('/', [AdminController::class, 'products'])->name('index');
-        Route::get('/add', [AdminController::class, 'addProduct'])->name('add');
-        Route::post('/store', [AdminController::class, 'storeProduct'])->name('store');
-        Route::get('/edit/{id}', [AdminController::class, 'editProduct'])->name('edit');
-        Route::put('/update', [AdminController::class, 'updateProduct'])->name('update');
-        Route::delete('/delete/{id}', [AdminController::class, 'deleteProduct'])->name('delete');
+        Route::get('/', [ProductController::class, 'products'])->name('index');
+        Route::get('/add', [ProductController::class, 'addProduct'])->name('add');
+        Route::post('/store', [ProductController::class, 'storeProduct'])->name('store');
+        Route::get('/edit/{id}', [ProductController::class, 'editProduct'])->name('edit');
+        Route::put('/update', [ProductController::class, 'updateProduct'])->name('update');
+        Route::delete('/delete/{id}', [ProductController::class, 'deleteProduct'])->name('delete');
     });
 
     // Coupon Management

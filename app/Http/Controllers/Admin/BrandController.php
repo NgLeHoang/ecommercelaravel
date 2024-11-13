@@ -5,13 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Repositories\Contracts\BrandRepositoryInterface;
-use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
-    use ImageUploadTrait;
-
     /**
      * Repository for handling brand data operations.
      *
@@ -80,6 +77,18 @@ class BrandController extends Controller
         return redirect()->route('admin.brands.index')->with('status', 'Brand has been added successfully');
     }
 
+    /**
+     * Display a page add brand view with brand respectively.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function editBrand($id)
+    {
+        $brand = $this->brandRepo->find($id);
+
+        return view('admin.brand-edit', compact('brand'));
+    }
+    
     /**
      * Update an existing brand.
      *

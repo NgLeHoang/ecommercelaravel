@@ -4,9 +4,14 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Category;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
+use App\Traits\ImageUploadTrait;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
+    use ImageUploadTrait;
+
     /**
      * The Category model instance.
      *
@@ -63,5 +68,73 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function getCategoryForHomePage()
     {
         return $this->model->orderBy('name')->get();
+    }
+
+    /**
+     * Store a new category in the database.
+     *
+     * @param array $data
+     * @return \App\Models\category
+     */
+    public function storeCategory(array $data)
+    {
+        return $this->model::create($data);
+    }
+
+    /**
+     * Update an existing category.
+     *
+     * @param int $id
+     * @param array $data
+     * @return bool
+     */
+    public function updateCategory(int $id, array $data): bool
+    {
+        $category = $this->model->find($id);
+        return $category->update($data);
+    }
+
+    /**
+     * Delete a category by ID.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function deleteCategory(int $id): bool
+    {
+        $category = $this->model->find($id);
+        return $category->delete();
+    }
+
+    /**
+     * Save the category image to the 'categories' folder using the ImageUploadTrait.
+     *
+     * @param \Illuminate\Http\UploadedFile $image
+     * @return string
+     */
+    public function saveCategoryImage($image): string
+    {
+        $fileExtension = $image->extension();
+        $fileName = Carbon::now()->timestamp . '.' . $fileExtension;
+
+        $this->saveImageToFolder($image, $fileName, 'categories', 124, 124);
+
+        return $fileName;
+    }
+
+    /**
+     * Delete the image of a category.
+     *
+     * @param int $id
+     * @return void
+     */
+    public function deleteCategoryImage(int $id): void
+    {
+        $category = $this->model->find($id);
+        $imagePath = public_path('uploads/categories') . '/' . $category->image;
+
+        if (File::exists($imagePath)) {
+            File::delete($imagePath);
+        }
     }
 }

@@ -7,10 +7,14 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Slide;
 use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Traits\ImageUploadTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProductRepository implements ProductRepositoryInterface
 {
+    use ImageUploadTrait;
     /**
      * The model instance that this repository will interact with.
      *
@@ -141,5 +145,110 @@ class ProductRepository implements ProductRepositoryInterface
     public function getFeaturedProducts()
     {
         $this->model->where('featured', true)->get()->take(8);
+    }
+
+    /**
+     * Store a new product in the database.
+     *
+     * @param array $data
+     * @return \App\Models\Product
+     */
+    public function storeProduct(array $data)
+    {
+        return $this->model::create($data);
+    }
+
+    /**
+     * Update an existing product.
+     *
+     * @param int $id
+     * @param array $data
+     * @return bool
+     */
+    public function updateProduct(int $id, array $data): bool
+    {
+        $product = $this->model->find($id);
+        return $product->update($data);
+    }
+
+    /**
+     * Delete a product by ID.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function deleteProduct(int $id): bool
+    {
+        $product = $this->model->find($id);
+        return $product->delete();
+    }
+
+    /**
+     * Save the brand image to the 'products' folder using the ImageUploadTrait.
+     *
+     * @param \Illuminate\Http\UploadedFile $image
+     * @return string
+     */
+    public function saveProductImage($image): string
+    {
+        $fileExtension = $image->extension();
+        $fileName = Carbon::now()->timestamp . '.' . $fileExtension;
+
+        $this->saveImageProductToFolder($image, $fileName);
+
+        return $fileName;
+    }
+
+    /**
+     * Save gallery images for a product to the specified folder and return their filenames as a comma-separated string.
+     *
+     * @param array $images 
+     * @return string 
+     * @throws \Exception
+     */
+    public function saveGalleryImages($images)
+    {
+        $allowedExtensions = ['jpg', 'jpeg', 'png'];
+        $galleryArray = [];
+        $counter = 1;
+        $timestamp = Carbon::now()->timestamp;
+
+        foreach ($images as $file) {
+            $extension = $file->getClientOriginalExtension();
+
+            // Check if file has allowed extension
+            if (in_array($extension, $allowedExtensions)) {
+                $fileName = $timestamp . '-' . $counter . '.' . $extension;
+
+                // Use the shared method to save each image
+                $this->saveImageProductToFolder($file, $fileName);
+                $galleryArray[] = $fileName;
+
+                $counter++;
+            } else {
+                // Return an error if the file type is invalid
+                throw new \Exception('Invalid file type for gallery images.');
+            }
+        }
+
+        // Join image names into a single string for saving in the database
+        return implode(',', $galleryArray);
+    }
+
+    public function deleteProductImage($imageName)
+    {
+        // Define the paths for the main image and thumbnail
+        $imagePath = public_path('uploads/products') . '/' . $imageName;
+        $thumbnailPath = public_path('uploads/products/thumbnails') . '/' . $imageName;
+
+        // Check if the main image exists and delete it
+        if (File::exists($imagePath)) {
+            File::delete($imagePath);
+        }
+
+        // Check if the thumbnail exists and delete it
+        if (File::exists($thumbnailPath)) {
+            File::delete($thumbnailPath);
+        }
     }
 }

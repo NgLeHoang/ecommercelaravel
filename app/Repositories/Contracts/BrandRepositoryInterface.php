@@ -20,6 +20,13 @@ interface BrandRepositoryInterface
     public function find($id);
 
     /**
+     * Get brands for use in product selection.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getBrandsForProduct();
+
+    /**
      * Store a new brand in the database.
      *
      * @param array $data

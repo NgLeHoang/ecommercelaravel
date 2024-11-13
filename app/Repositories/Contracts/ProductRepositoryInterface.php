@@ -58,4 +58,46 @@ interface ProductRepositoryInterface
      * @return \Illuminate\Database\Eloquent\Collection 
      */
     public function getFeaturedProducts();
+
+    /**
+     * Store a new product in the database.
+     *
+     * @param array $data
+     * @return \App\Models\Product
+     */
+    public function storeProduct(array $data);
+
+    /**
+     * Update an existing product.
+     *
+     * @param int $id
+     * @param array $data
+     * @return bool
+     */
+    public function updateProduct(int $id, array $data): bool;
+
+    /**
+     * Delete a product by ID.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function deleteProduct(int $id): bool;
+
+    /**
+     * Save the brand image to the 'products' folder using the ImageUploadTrait.
+     *
+     * @param \Illuminate\Http\UploadedFile $image
+     * @return string
+     */
+    public function saveProductImage($image): string;
+
+    /**
+     * Save gallery images for a product to the specified folder and return their filenames as a comma-separated string.
+     *
+     * @param array $images 
+     * @return string 
+     * @throws \Exception
+     */
+    public function saveGalleryImages($images);
 }
