@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Guest\CartController;
 use App\Http\Controllers\Guest\HomeController;
@@ -82,12 +83,12 @@ Route::middleware(['auth', AuthAdmin::class])->prefix('admin')->name('admin.')->
 
     // Brand Management
     Route::prefix('brands')->name('brands.')->group(function () {
-        Route::get('/', [AdminController::class, 'brands'])->name('index');
-        Route::get('/add', [AdminController::class, 'addBrand'])->name('add');
-        Route::post('/store', [AdminController::class, 'storeBrand'])->name('store');
-        Route::get('/edit/{id}', [AdminController::class, 'editBrand'])->name('edit');
-        Route::put('/update', [AdminController::class, 'updateBrand'])->name('update');
-        Route::delete('/delete/{id}', [AdminController::class, 'deleteBrand'])->name('delete');
+        Route::get('/', [BrandController::class, 'brands'])->name('index');
+        Route::get('/add', [BrandController::class, 'addBrand'])->name('add');
+        Route::post('/store', [BrandController::class, 'storeBrand'])->name('store');
+        Route::get('/edit/{id}', [BrandController::class, 'editBrand'])->name('edit');
+        Route::put('/update', [BrandController::class, 'updateBrand'])->name('update');
+        Route::delete('/delete/{id}', [BrandController::class, 'deleteBrand'])->name('delete');
     });
 
     // Category Management

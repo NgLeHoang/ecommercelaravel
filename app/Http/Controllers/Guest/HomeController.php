@@ -43,6 +43,9 @@ class HomeController extends Controller
      * Create a new controller instance and inject dependencies.
      *
      * @param \App\Repositories\Contracts\SlideRepositoryInterface $slideRepo
+     * @param \App\Repositories\Contracts\CategoryRepositoryInterface $categoryRepo
+     * @param \App\Repositories\Contracts\ProductRepositoryInterface $productRepo
+     * @param \App\Repositories\Contracts\ContactRepositoryInterface $contactRepo
      */
     public function __construct(
         SlideRepositoryInterface $slideRepo,

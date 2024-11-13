@@ -91,43 +91,6 @@ class AdminController extends Controller
         ));
     }
 
-    //Brand management
-    public function brands()
-    {
-        $brands = $this->brandRepo->getAll();
-        return view('admin.brands', compact('brands'));
-    }
-
-    public function addBrand()
-    {
-        return view('admin.brand-add');
-    }
-
-    public function storeBrand(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'slug' => 'required|unique:brands,slug',
-            'image' => 'mimes:jpg,jpeg,png|max:2048'
-        ]);
-
-        //Init brand
-        $brand = new Brand();
-        $brand->name = $request->name;
-        $brand->slug = Str::slug($request->slug);
-
-        //Get and save image
-        $image = $request->file('image');
-        $fileExtension = $request->file('image')->extension();
-        $fileName = Carbon::now()->timestamp . '.' . $fileExtension;
-        $this->saveImageToFolder($image, $fileName, 'brands', 124, 124);
-        $brand->image = $fileName;
-
-        $brand->save();
-
-        return redirect()->route('admin.brands')->with('status', 'Brand has been added successfully');
-    }
-
     public function saveImageToFolder($image, $imageName, $folderName, $width, $height)
     {
         $destinationPath = public_path('uploads/' . $folderName);
@@ -138,51 +101,6 @@ class AdminController extends Controller
         $img->resize($width, $height, function ($constraint) {
             $constraint->aspectRatio();
         })->save($destinationPath . '/' . $imageName);
-    }
-
-    public function editBrand($id)
-    {
-        $brand = $this->brandRepo->find($id);
-        return view('admin.brand-edit', compact('brand'));
-    }
-
-    public function updateBrand(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'slug' => 'required|unique:brands,slug,' . $request->id,
-            'image' => 'mimes:jpg,jpeg,png|max:2048'
-        ]);
-
-        $brand = $this->brandRepo->find($request->id);
-        $brand->name = $request->name;
-        $brand->slug = Str::slug($request->slug);
-
-        if ($request->hasFile('image')) {
-            $img = public_path('uploads/brands') . '/' . $brand->image;
-            if (File::exists($img)) File::delete($img);
-
-            $image = $request->file('image');
-            $fileExtension = $request->file('image')->extension();
-            $fileName = Carbon::now()->timestamp . '.' . $fileExtension;
-            $this->saveImageToFolder($image, $fileName, 'brands', 124, 124);
-            $brand->image = $fileName;
-        }
-
-        $brand->save();
-
-        return redirect()->route('admin.brands')->with('status', 'Brand has been updated successfully!');
-    }
-
-    public function deleteBrand($id)
-    {
-        $brand = $this->brandRepo->find($id);
-        $img = public_path('uploads/brands') . '/' . $brand->image;
-        if (File::exists($img)) File::delete($img);
-
-        $brand->delete();
-
-        return redirect()->route('admin.brands')->with('status', 'Brand has been deleted successfully');
     }
 
     //Category management
