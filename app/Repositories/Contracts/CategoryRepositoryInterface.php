@@ -25,4 +25,11 @@ interface CategoryRepositoryInterface
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getCategoryForProduct();
+
+    /**
+     * Get categories for display on homepage.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getCategoryForHomePage();
 }

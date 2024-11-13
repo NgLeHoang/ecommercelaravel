@@ -64,6 +64,6 @@ class OrderItemRepository implements OrderItemRepositoryInterface
      */
     public function createOrderItem(array $data)
     {
-        return $this->model::create($data);
+        return $this->model->create($data);
     }
 }

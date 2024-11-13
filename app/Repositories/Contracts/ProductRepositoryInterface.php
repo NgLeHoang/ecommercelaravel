@@ -44,4 +44,18 @@ interface ProductRepositoryInterface
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getProductBySlug($product_slug);
+
+    /**
+     * Retrieve a random selection of sale products.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection 
+     */
+    public function getSaleProducts();
+
+    /**
+     * Retrieve a selection of featured products.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection 
+     */
+    public function getFeaturedProducts();
 }

@@ -122,4 +122,24 @@ class ProductRepository implements ProductRepositoryInterface
     {
         $this->model->where('slug', '<>', $product_slug)->get()->take(8);
     }
+
+    /**
+     * Retrieve a random selection of sale products.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection 
+     */
+    public function getSaleProducts()
+    {
+        $this->model->whereNotNull('sale_price')->where('sale_price', '<>', '')->inRandomOrder()->get()->take(8);
+    }
+
+    /**
+     * Retrieve a selection of featured products.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection 
+     */
+    public function getFeaturedProducts()
+    {
+        $this->model->where('featured', true)->get()->take(8);
+    }
 }

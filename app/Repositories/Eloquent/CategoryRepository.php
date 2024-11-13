@@ -54,4 +54,14 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->model->select('id', 'name')->orderBy('name')->get();
     }
+
+    /**
+     * Get categories for display on homepage.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getCategoryForHomePage()
+    {
+        return $this->model->orderBy('name')->get();
+    }
 }

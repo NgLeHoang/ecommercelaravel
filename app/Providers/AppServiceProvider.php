@@ -25,6 +25,10 @@ use App\Repositories\Contracts\CartRepositoryInterface;
 use App\Repositories\Eloquent\CartRepository;
 use App\Repositories\Contracts\CouponRepositoryInterface;
 use App\Repositories\Eloquent\CouponRepository;
+use App\Repositories\Contracts\SlideRepositoryInterface;
+use App\Repositories\Eloquent\SlideRepository;
+use App\Repositories\Contracts\ContactRepositoryInterface;
+use App\Repositories\Eloquent\ContactRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,6 +48,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(CartRepositoryInterface::class, CartRepository::class);
         $this->app->bind(CouponRepositoryInterface::class, CouponRepository::class);
+        $this->app->bind(SlideRepositoryInterface::class, SlideRepository::class);
+        $this->app->bind(ContactRepositoryInterface::class, ContactRepository::class);
 
     }
 
