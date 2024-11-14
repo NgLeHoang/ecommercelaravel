@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Order;
 use App\Repositories\Contracts\OrderRepositoryInterface;
+use Carbon\Carbon;
 
 class OrderRepository implements OrderRepositoryInterface
 {
@@ -32,6 +33,16 @@ class OrderRepository implements OrderRepositoryInterface
     public function getAll()
     {
         return $this->model->orderBy('id', 'DESC')->paginate(12);
+    }
+
+    /**
+     * Retrieve the latest 10 records for display on the admin page.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getForAdminPage()
+    {
+        return $this->model->orderBy('created_at', 'DESC')->get()->take(10);
     }
 
     /**
@@ -77,5 +88,28 @@ class OrderRepository implements OrderRepositoryInterface
     public function createOrder(array $data)
     {
         return $this->model::create($data);
+    }
+
+    /**
+     * Update the status and dates of an order based on the new status.
+     *
+     * @param int $orderId
+     * @param string $status
+     * @return void
+     */
+    public function updateStatus(int $orderId, string $status): void
+    {
+        $order = $this->model->find($orderId);
+
+        $order->status = $status;
+
+        // Set dates based on the status
+        if ($status === 'delivered') {
+            $order->delivered_date = Carbon::now();
+        } elseif ($status === 'canceled') {
+            $order->canceled_date = Carbon::now();
+        }
+
+        $order->save();
     }
 }

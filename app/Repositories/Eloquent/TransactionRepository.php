@@ -67,4 +67,22 @@ class TransactionRepository implements TransactionRepositoryInterface
     {
         return Transaction::create($data);
     }
+
+    /**
+     * Update the status of a transaction based on the order ID.
+     *
+     * @param int $orderId
+     * @param string $status
+     * @return void
+     */
+    public function updateStatusByOrderId(int $orderId, string $status): void
+    {
+        $transaction = $this->model->where('order_id', $orderId)->first();
+
+        // Update the transaction status
+        if ($transaction) {
+            $transaction->status = $status;
+            $transaction->save();
+        }
+    }
 }

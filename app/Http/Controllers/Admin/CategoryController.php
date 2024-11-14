@@ -124,6 +124,12 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('status', 'Category has updated successfully');
     }
 
+    /**
+     * Delete a category by id.
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function deleteCategory($id)
     {
         // Delete category and associated image

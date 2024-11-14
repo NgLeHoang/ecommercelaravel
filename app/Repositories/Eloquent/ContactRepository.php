@@ -25,6 +25,16 @@ class ContactRepository implements ContactRepositoryInterface
     }
 
     /**
+     * Get all contacts with pagination.
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getAll()
+    {
+        return $this->model->orderBy('created_at', 'DESC')->paginate(10);
+    }
+
+    /**
      * Create a new contact record.
      *
      * @param array $data
@@ -39,5 +49,17 @@ class ContactRepository implements ContactRepositoryInterface
         $contact->comment = $data['comment'];
 
         return $contact->save();
+    }
+
+    /**
+     * Delete a contact by ID.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function deleteContact(int $id): bool
+    {
+        $contact = $this->model->find($id);
+        return $contact->delete();
     }
 }

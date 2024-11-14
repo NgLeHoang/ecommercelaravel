@@ -35,4 +35,13 @@ interface TransactionRepositoryInterface
      * @return \App\Models\Transaction
      */
     public function createTransaction(array $data);
+
+    /**
+     * Update the status of a transaction based on the order ID.
+     *
+     * @param int $orderId
+     * @param string $status
+     * @return void
+     */
+    public function updateStatusByOrderId(int $orderId, string $status): void;
 }

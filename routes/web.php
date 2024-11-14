@@ -3,7 +3,10 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Guest\CartController;
 use App\Http\Controllers\Guest\HomeController;
@@ -115,29 +118,29 @@ Route::middleware(['auth', AuthAdmin::class])->prefix('admin')->name('admin.')->
 
     // Coupon Management
     Route::prefix('coupons')->name('coupons.')->group(function () {
-        Route::get('/', [AdminController::class, 'coupons'])->name('index');
-        Route::get('/add', [AdminController::class, 'addCoupon'])->name('add');
-        Route::post('/store', [AdminController::class, 'storeCoupon'])->name('store');
-        Route::get('/edit/{id}', [AdminController::class, 'editCoupon'])->name('edit');
-        Route::put('/update', [AdminController::class, 'updateCoupon'])->name('update');
-        Route::delete('/delete/{id}', [AdminController::class, 'deleteCoupon'])->name('delete');
+        Route::get('/', [CouponController::class, 'coupons'])->name('index');
+        Route::get('/add', [CouponController::class, 'addCoupon'])->name('add');
+        Route::post('/store', [CouponController::class, 'storeCoupon'])->name('store');
+        Route::get('/edit/{id}', [CouponController::class, 'editCoupon'])->name('edit');
+        Route::put('/update', [CouponController::class, 'updateCoupon'])->name('update');
+        Route::delete('/delete/{id}', [CouponController::class, 'deleteCoupon'])->name('delete');
     });
 
     // Order Management
     Route::prefix('orders')->name('orders.')->group(function () {
-        Route::get('/', [AdminController::class, 'orders'])->name('index');
-        Route::get('/details/{order_id}', [AdminController::class, 'orderDetails'])->name('details');
-        Route::put('/update-status', [AdminController::class, 'updateOrderStatus'])->name('status.update');
+        Route::get('/', [OrderController::class, 'orders'])->name('index');
+        Route::get('/details/{order_id}', [OrderController::class, 'orderDetails'])->name('details');
+        Route::put('/update-status', [OrderController::class, 'updateOrderStatus'])->name('status.update');
     });
 
     // Slide Management
     Route::prefix('slides')->name('slides.')->group(function () {
-        Route::get('/', [AdminController::class, 'slides'])->name('index');
-        Route::get('/add', [AdminController::class, 'addSlide'])->name('add');
-        Route::post('/store', [AdminController::class, 'storeSlide'])->name('store');
-        Route::get('/edit/{id}', [AdminController::class, 'editSlide'])->name('edit');
-        Route::put('/update', [AdminController::class, 'updateSlide'])->name('update');
-        Route::delete('/delete/{id}', [AdminController::class, 'deleteSlide'])->name('delete');
+        Route::get('/', [SlideController::class, 'slides'])->name('index');
+        Route::get('/add', [SlideController::class, 'addSlide'])->name('add');
+        Route::post('/store', [SlideController::class, 'storeSlide'])->name('store');
+        Route::get('/edit/{id}', [SlideController::class, 'editSlide'])->name('edit');
+        Route::put('/update', [SlideController::class, 'updateSlide'])->name('update');
+        Route::delete('/delete/{id}', [SlideController::class, 'deleteSlide'])->name('delete');
     });
 
     // Contact Management

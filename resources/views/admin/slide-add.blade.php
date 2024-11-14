@@ -28,7 +28,7 @@
             </ul>
         </div>
         <div class="wg-box">
-            <form class="form-new-product form-style-1" method="POST" action="{{route('admin.slide.store')}}" enctype="multipart/form-data">
+            <form class="form-new-product form-style-1" method="POST" action="{{route('admin.slides.store')}}" enctype="multipart/form-data">
                 @csrf
                 <fieldset class="name">
                     <div class="body-title">Tagline <span class="tf-color-1">*</span></div>

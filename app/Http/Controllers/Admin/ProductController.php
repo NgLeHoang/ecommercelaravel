@@ -36,6 +36,8 @@ class ProductController extends Controller
      * Create a new controller instance and inject dependencies.
      *
      * @param \App\Repositories\Eloquent\ProductRepositoryInterface $productRepo
+     * @param \App\Repositories\Eloquent\BrandRepositoryInterface $brandRepo
+     * @param \App\Repositories\Eloquent\CategoryRepositoryInterface $categoryRepo
      */
     public function __construct(ProductRepositoryInterface $productRepo,
     BrandRepositoryInterface $brandRepo,
@@ -120,7 +122,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Display a page add product view with product respectively and categories, brands.
+     * Display a page edit product view with product respectively and categories, brands.
      *
      * @return \Illuminate\View\View
      */

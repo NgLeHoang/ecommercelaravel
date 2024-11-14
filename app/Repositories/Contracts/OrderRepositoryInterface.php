@@ -12,6 +12,13 @@ interface OrderRepositoryInterface
     public function getAll();
 
     /**
+     * Retrieve the latest 10 records for display on the admin page.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getForAdminPage();
+
+    /**
      * Find a record item by its ID.
      *
      * @param int $id
@@ -43,4 +50,13 @@ interface OrderRepositoryInterface
      * @return \App\Models\Order
      */
     public function createOrder(array $data);
+
+    /**
+     * Update the status and dates of an order based on the new status.
+     *
+     * @param int $orderId
+     * @param string $status
+     * @return void
+     */
+    public function updateStatus(int $orderId, string $status): void;
 }
